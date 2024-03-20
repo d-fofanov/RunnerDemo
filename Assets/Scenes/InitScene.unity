@@ -412,7 +412,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 381ea8655b634b0984e659a95771c8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _avgTime: 0.15
+  _offset: {x: -3, y: 0, z: -5}
+  _focalOffset: {x: 1.2, y: 0, z: 0}
 --- !u!224 &976374819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8606430918948394245, guid: 7f08373a97afcac46b5abaa2acaa2774, type: 3}

@@ -1,9 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Controllers;
 using Reflex.Attributes;
 using RunnerModel;
+using RX;
 using Settings;
 using StarterAssets;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace Views.Gameplay
 {
@@ -12,11 +17,18 @@ namespace Views.Gameplay
      */
     public class GCharacterView : MonoBehaviour
     {
-        [Inject] private ROModel _model;
-        
         private ModifiedThirdPersonController _controller =>
             _controllerValue ??= GetComponent<ModifiedThirdPersonController>();
         private ModifiedThirdPersonController _controllerValue;
+        private CompositeDisposable _disposable = new();
+        private ROModel _model;
+
+        [Inject]
+        public void Init(ROModel model, InputController inputController)
+        {
+            _model = model;
+            inputController.JumpInput.Subscribe(OnJumpInputChanged).AddTo(_disposable);
+        }
 
         public void SetFrozen(bool val)
         {
@@ -25,9 +37,14 @@ namespace Views.Gameplay
 
         private void Start()
         {
-            var control = GetComponent<StarterAssetsInputs>();
+            var control = _controller.InputsData;
             control.move = Vector2.right;
             control.sprint = true;
+        }
+
+        private void OnJumpInputChanged(bool val)
+        {
+            _controller.InputsData.jump = val;
         }
 
         private void Update()
@@ -40,6 +57,12 @@ namespace Views.Gameplay
             );
 
             _controller.Modifiers = aggregated;
+        }
+
+        private void OnDestroy()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
         }
     }
 }

@@ -34,7 +34,6 @@ namespace Controllers
             WritableGame = game;
             
             meta.SubscribeToAnyChange(OnAnyModelChange).AddTo(_disposable);
-            game.SubscribeToAnyChange(OnAnyModelChange).AddTo(_disposable);
             
             timeUtil.AddUpdateAction(OnUpdate).AddTo(_disposable);
         }

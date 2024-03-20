@@ -30,6 +30,7 @@ namespace DI
 
             builder.AddSingleton(container => new UIViewFactory(container));
 
+            builder.AddSingleton(typeof(InputController));
             builder.AddSingleton(typeof(AssetFactory));
             builder.AddSingleton(typeof(CoinController));
             builder.AddSingleton(typeof(CharacterController));
